@@ -35,18 +35,24 @@ exports.newQuotesTrigger = functions.database.ref('library/{bookAndAuthor}').onW
 
     const newValue = message.after.val();
     const oldValue = message.before.val();
-
+    
+    const author = snakeCase(newValue.author);
     const newQuotes = newValue.quotes || [];
     const oldQuotes = oldValue.quotes || [];
     const diff = arrayDiff(newQuotes, oldQuotes);
+    var updates = {};
+
+    Object.keys(diff).forEach(function (key) {
+        let quote = diff[key];
+        const newQuoteKey = admin.database().ref('authors/' + author).child('quotes').push().key;
+        updates[newQuoteKey] = quote ;
+    });
+
+    return admin.database().ref('authors/' + author).child('quotes').update(updates);
     
-    if (diff) {
-        console.log('Quotes were updated for ', {title: newValue.title, author: newValue.author});
-        const author = snakeCase(newValue.author);
-        admin.database().ref('authors/' + author).child('quotes').push(diff);
-        console.log('Updated author quotes');
-    }
+    // admin.database().ref('authors/' + author).child('quotes').update(newValue.quotes);
+    // console.log('Updated author quotes');
     
-    return message;
+    // return message;
 });
 
