@@ -49,10 +49,5 @@ exports.newQuotesTrigger = functions.database.ref('library/{bookAndAuthor}').onW
     });
 
     return admin.database().ref('authors/' + author).child('quotes').update(updates);
-    
-    // admin.database().ref('authors/' + author).child('quotes').update(newValue.quotes);
-    // console.log('Updated author quotes');
-    
-    // return message;
 });
 
