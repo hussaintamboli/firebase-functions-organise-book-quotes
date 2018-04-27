@@ -2,34 +2,51 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-
-exports.helloWorld = functions.https.onRequest((request, response) => {
-    response.send("Hello from Firebase!");
-});
-
 function snakeCase(string) {
     return string.replace(/\s+/g, '-').toLowerCase();
+}
+
+function arrayDiff (a1, a2) {
+
+    var a = [], diff = [];
+
+    for (var i = 0; i < a1.length; i++) {
+        a[a1[i]] = true;
+    }
+
+    for (var j = 0; j < a2.length; j++) {
+        if (a[a2[j]]) {
+            delete a[a2[j]];
+        } else {
+            a[a2[j]] = true;
+        }
+    }
+
+    for (var k in a) {
+        diff.push(k);
+    }
+
+    return diff;
 }
 
 exports.newQuotesTrigger = functions.database.ref('library/{bookAndAuthor}').onWrite((snap, context) => {
     const message = snap;
     console.log('Retrieved message content: ', message);
+
     const newValue = message.after.val();
-    console.log('new value ', newValue);
-
     const oldValue = message.before.val();
-    console.log('old value ', oldValue);
 
-    console.log('new quotes ', JSON.stringify(newValue.quotes));
-    console.log('old quotes ', JSON.stringify(oldValue.quotes));
-
-    const author = snakeCase(newValue.author);
-    admin.database().ref('authors/' + author + '/quotes').set(newValue.quotes);
-    console.log('Updated author')
-
+    const newQuotes = newValue.quotes || [];
+    const oldQuotes = oldValue.quotes || [];
+    const diff = arrayDiff(newQuotes, oldQuotes);
+    
+    if (diff) {
+        console.log('Quotes were updated for ', {title: newValue.title, author: newValue.author});
+        const author = snakeCase(newValue.author);
+        admin.database().ref('authors/' + author).child('quotes').push(diff);
+        console.log('Updated author quotes');
+    }
+    
     return message;
 });
 
