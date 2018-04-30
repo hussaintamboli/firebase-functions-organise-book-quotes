@@ -37,8 +37,12 @@ exports.newQuotesTrigger = functions.database.ref('library/{bookAndAuthor}').onW
     const oldValue = message.before.val();
     
     const author = snakeCase(newValue.author);
-    const newQuotes = newValue.quotes || [];
-    const oldQuotes = oldValue.quotes || [];
+    const newQuotes = Object.keys(newValue.quotes || []).map(function(key) {
+        return newValue.quotes[key];
+    });
+    const oldQuotes = Object.keys(oldValue.quotes || []).map(function(key) {
+        return oldValue.quotes[key];
+    });
     const diff = arrayDiff(newQuotes, oldQuotes);
     var updates = {};
 
