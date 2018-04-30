@@ -2,11 +2,11 @@ My [reactjs-book-quoutes-organiser](https://github.com/hussaintamboli/reactjs-bo
 
 My Firebase DB structure looks like this.
 
-![BookQuotes DB-half](https://github.com/hussaintamboli/firebase-functions-organise-book-quotes/book quotes library.png)
+![BookQuotes DB-half](https://github.com/hussaintamboli/firebase-functions-organise-book-quotes/blob/master/book%20quotes%20library.png)
 
 It's troublesome to fetch quotes of an author. I need to store quotes of author separately and fetch from there. 
 
 `newQuotesTrigger` **function takes a new quote and adds it under author's quotes.**
 
-![BookQuotes DB-complete](https://github.com/hussaintamboli/firebase-functions-organise-book-quotes/book quotes firebase db.png)
+![BookQuotes DB-complete](https://github.com/hussaintamboli/firebase-functions-organise-book-quotes/blob/master/book%20quotes%20firebase%20db.png)
 
