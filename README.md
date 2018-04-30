@@ -6,7 +6,7 @@ My Firebase DB structure looks like this.
 
 It's troublesome to fetch quotes of an author. I need to store quotes of author separately and fetch from there. 
 
-h5. `newQuotesTrigger` **takes care that every new book quote automatically gets added under it's author**
+##### `newQuotesTrigger` **takes care that every new book quote automatically gets added under it's author**
 
 ![BookQuotes DB-complete](https://github.com/hussaintamboli/firebase-functions-organise-book-quotes/blob/master/book%20quotes%20firebase%20db.png)
 
